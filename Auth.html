@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login & Registration - AI Career Guide</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #0a0e1a 0%, #1a2332 50%, #2d3b4e 100%);
+            color: #f1f5f9;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .auth-container {
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 40px;
+            border: 1px solid rgba(59, 130, 246, 0.4);
+            max-width: 450px;
+            width: 100%;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.6);
+        }
+
+        .header-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 24px;
+            font-size: 2.5rem;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 10px;
+            color: #f1f5f9;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #94a3b8;
+            margin-bottom: 30px;
+            font-size: 0.95rem;
+        }
+
+        .form-section {
+            display: none;
+        }
+
+        .form-section.active {
+            display: block;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #e2e8f0;
+            font-size: 0.95rem;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid rgba(100, 116, 139, 0.3);
+            border-radius: 12px;
+            background: rgba(10, 14, 26, 0.85);
+            color: #ffffff;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #3b82f6;
+            background: rgba(10, 14, 26, 0.9);
+        }
+
+        .form-group input::placeholder {
+            color: #64748b;
+        }
+
+        .otp-container {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        .otp-input {
+            width: 50px;
+            height: 50px;
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: 600;
+            border: 2px solid rgba(100, 116, 139, 0.3);
+            border-radius: 12px;
+            background: rgba(10, 14, 26, 0.85);
+            color: #ffffff;
+            transition: all 0.3s ease;
+        }
+
+        .otp-input:focus {
+            outline: none;
+            border-color: #3b82f6;
+            background: rgba(10, 14, 26, 0.9);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.05rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(37, 99, 235, 0.4);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-secondary {
+            background: rgba(37, 99, 235, 0.2);
+            border: 1px solid rgba(37, 99, 235, 0.4);
+        }
+
+        .switch-link {
+            text-align: center;
+            margin-top: 20px;
+            color: #94a3b8;
+            font-size: 0.95rem;
+        }
+
+        .switch-link a {
+            color: #3b82f6;
+            text-decoration: none;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .switch-link a:hover {
+            color: #7c3aed;
+        }
+
+        .message {
+            padding: 12px 16px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+            text-align: center;
+        }
+
+        .message.error {
+            background: rgba(248, 113, 113, 0.2);
+            border: 1px solid rgba(248, 113, 113, 0.4);
+            color: #fca5a5;
+        }
+
+        .message.success {
+            background: rgba(34, 197, 94, 0.2);
+            border: 1px solid rgba(34, 197, 94, 0.4);
+            color: #86efac;
+        }
+
+        .message.info {
+            background: rgba(59, 130, 246, 0.2);
+            border: 1px solid rgba(59, 130, 246, 0.4);
+            color: #93c5fd;
+        }
+
+        .timer {
+            text-align: center;
+            color: #94a3b8;
+            margin-top: 15px;
+            font-size: 0.9rem;
+        }
+
+        .timer.active {
+            color: #3b82f6;
+            font-weight: 600;
+        }
+
+        .back-link {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .back-link a {
+            color: #94a3b8;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        .back-link a:hover {
+            color: #3b82f6;
+        }
+
+        .password-strength {
+            height: 4px;
+            background: rgba(161, 161, 170, 0.2);
+            border-radius: 2px;
+            margin-top: 8px;
+            overflow: hidden;
+        }
+
+        .password-strength-bar {
+            height: 100%;
+            width: 0%;
+            transition: all 0.3s ease;
+            border-radius: 2px;
+        }
+
+        .strength-weak {
+            background: #f87171;
+            width: 33%;
+        }
+
+        .strength-medium {
+            background: #fbbf24;
+            width: 66%;
+        }
+
+        .strength-strong {
+            background: #22c55e;
+            width: 100%;
+        }
+
+        .password-hint {
+            font-size: 0.85rem;
+            color: #94a3b8;
+            margin-top: 6px;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .form-section.active {
+            animation: fadeIn 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+    <div class="auth-container">
+        <div class="header-icon">🔐</div>
+        <h1 id="formTitle">Welcome Back</h1>
+        <p class="subtitle" id="formSubtitle">Sign in to continue your journey</p>
+
+        <div id="messageBox"></div>
+
+        <!-- Login Form -->
+        <div id="loginForm" class="form-section active">
+            <div class="form-group">
+                <label for="loginEmail">Email Address</label>
+                <input type="email" id="loginEmail" placeholder="Enter your email" required>
+            </div>
+            <div class="form-group">
+                <label for="loginPassword">Password</label>
+                <input type="password" id="loginPassword" placeholder="Enter your password" required>
+            </div>
+            <button class="btn" onclick="handleLogin()">Sign In</button>
+            <div class="switch-link">
+                Don't have an account? <a onclick="switchToRegister()">Register here</a>
+            </div>
+        </div>
+
+        <!-- Registration Form -->
+        <div id="registerForm" class="form-section">
+            <div class="form-group">
+                <label for="registerName">Full Name</label>
+                <input type="text" id="registerName" placeholder="Enter your full name" required>
+            </div>
+            <div class="form-group">
+                <label for="registerEmail">Email Address</label>
+                <input type="email" id="registerEmail" placeholder="Enter your email" required>
+            </div>
+            <div class="form-group">
+                <label for="registerPassword">Password</label>
+                <input type="password" id="registerPassword" placeholder="Create a password" required oninput="checkPasswordStrength()">
+                <div class="password-strength">
+                    <div id="passwordStrengthBar" class="password-strength-bar"></div>
+                </div>
+                <div class="password-hint">Use at least 8 characters with a mix of letters and numbers</div>
+            </div>
+            <button class="btn" onclick="handleRegister()">Create Account</button>
+            <div class="switch-link">
+                Already have an account? <a onclick="switchToLogin()">Sign in</a>
+            </div>
+        </div>
+
+        <!-- OTP Verification Form -->
+        <div id="otpForm" class="form-section">
+            <p class="subtitle">Enter the 6-digit code sent to <strong id="otpEmail"></strong></p>
+            
+            <!-- OTP Display Box for Testing -->
+            <div id="otpDisplayBox" style="background: rgba(59, 130, 246, 0.2); border: 2px solid rgba(59, 130, 246, 0.6); padding: 20px; border-radius: 12px; margin-bottom: 20px; text-align: center;">
+                <div style="color: #93c5fd; font-size: 0.9rem; margin-bottom: 8px;">🔑 Your OTP Code (For Testing)</div>
+                <div id="otpDisplay" style="font-size: 2rem; font-weight: 700; color: #f1f5f9; letter-spacing: 8px; font-family: 'Courier New', monospace;"></div>
+                <div style="color: #93c5fd; font-size: 0.85rem; margin-top: 8px; font-style: italic;">Copy this code and enter it below</div>
+            </div>
+            
+            <div class="otp-container">
+                <input type="text" class="otp-input" maxlength="1" id="otp1" oninput="moveToNext(this, 'otp2')" onkeydown="handleBackspace(event, this, null)">
+                <input type="text" class="otp-input" maxlength="1" id="otp2" oninput="moveToNext(this, 'otp3')" onkeydown="handleBackspace(event, this, 'otp1')">
+                <input type="text" class="otp-input" maxlength="1" id="otp3" oninput="moveToNext(this, 'otp4')" onkeydown="handleBackspace(event, this, 'otp2')">
+                <input type="text" class="otp-input" maxlength="1" id="otp4" oninput="moveToNext(this, 'otp5')" onkeydown="handleBackspace(event, this, 'otp3')">
+                <input type="text" class="otp-input" maxlength="1" id="otp5" oninput="moveToNext(this, 'otp6')" onkeydown="handleBackspace(event, this, 'otp4')">
+                <input type="text" class="otp-input" maxlength="1" id="otp6" oninput="handleOTPComplete()" onkeydown="handleBackspace(event, this, 'otp5')">
+            </div>
+            <button class="btn" onclick="verifyOTP()">Verify OTP</button>
+            <button class="btn btn-secondary" onclick="resendOTP()" id="resendBtn">Resend Code</button>
+            <div class="timer" id="timer"></div>
+            <div class="switch-link">
+                <a onclick="switchToLogin()">Back to Login</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentEmail = '';
+        let generatedOTP = '';
+        let resendTimer = null;
+        let resendSeconds = 60;
+
+        // Switch between forms
+        function switchToLogin() {
+            hideAllForms();
+            document.getElementById('loginForm').classList.add('active');
+            document.getElementById('formTitle').textContent = 'Welcome Back';
+            document.getElementById('formSubtitle').textContent = 'Sign in to continue your journey';
+            clearMessage();
+        }
+
+        function switchToRegister() {
+            hideAllForms();
+            document.getElementById('registerForm').classList.add('active');
+            document.getElementById('formTitle').textContent = 'Create Account';
+            document.getElementById('formSubtitle').textContent = 'Join us to discover your career path';
+            clearMessage();
+        }
+
+        function switchToOTP(email) {
+            hideAllForms();
+            document.getElementById('otpForm').classList.add('active');
+            document.getElementById('formTitle').textContent = 'Verify Your Email';
+            document.getElementById('formSubtitle').textContent = '';
+            document.getElementById('otpEmail').textContent = email;
+            currentEmail = email;
+            document.getElementById('otp1').focus();
+            startResendTimer();
+        }
+
+        function hideAllForms() {
+            document.querySelectorAll('.form-section').forEach(form => {
+                form.classList.remove('active');
+            });
+        }
+
+        // Message handling
+        function showMessage(message, type) {
+            const messageBox = document.getElementById('messageBox');
+            messageBox.innerHTML = `<div class="message ${type}">${message}</div>`;
+            setTimeout(() => {
+                if (type === 'success') {
+                    clearMessage();
+                }
+            }, 5000);
+        }
+
+        function clearMessage() {
+            document.getElementById('messageBox').innerHTML = '';
+        }
+
+        // Password strength checker
+        function checkPasswordStrength() {
+            const password = document.getElementById('registerPassword').value;
+            const strengthBar = document.getElementById('passwordStrengthBar');
+            
+            let strength = 0;
+            if (password.length >= 8) strength++;
+            if (password.match(/[a-z]/) && password.match(/[A-Z]/)) strength++;
+            if (password.match(/[0-9]/)) strength++;
+            if (password.match(/[^a-zA-Z0-9]/)) strength++;
+
+            strengthBar.className = 'password-strength-bar';
+            
+            if (strength <= 1) {
+                strengthBar.classList.add('strength-weak');
+            } else if (strength <= 3) {
+                strengthBar.classList.add('strength-medium');
+            } else {
+                strengthBar.classList.add('strength-strong');
+            }
+        }
+
+        // Login handler
+        function handleLogin() {
+            const email = document.getElementById('loginEmail').value.trim();
+            const password = document.getElementById('loginPassword').value;
+
+            if (!email || !password) {
+                showMessage('Please fill in all fields', 'error');
+                return;
+            }
+
+            if (!isValidEmail(email)) {
+                showMessage('Please enter a valid email address', 'error');
+                return;
+            }
+
+            // Check if user exists in localStorage
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            const user = users.find(u => u.email === email && u.password === password);
+
+            if (user) {
+                showMessage('Login successful! Redirecting...', 'success');
+                localStorage.setItem('currentUser', JSON.stringify(user));
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 1500);
+            } else {
+                showMessage('Invalid email or password', 'error');
+            }
+        }
+
+        // Registration handler
+        function handleRegister() {
+            const name = document.getElementById('registerName').value.trim();
+            const email = document.getElementById('registerEmail').value.trim();
+            const password = document.getElementById('registerPassword').value;
+
+            if (!name || !email || !password) {
+                showMessage('Please fill in all fields', 'error');
+                return;
+            }
+
+            if (!isValidEmail(email)) {
+                showMessage('Please enter a valid email address', 'error');
+                return;
+            }
+
+            if (password.length < 8) {
+                showMessage('Password must be at least 8 characters long', 'error');
+                return;
+            }
+
+            // Check if user already exists
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            if (users.find(u => u.email === email)) {
+                showMessage('An account with this email already exists', 'error');
+                return;
+            }
+
+            // Store user data temporarily
+            sessionStorage.setItem('pendingUser', JSON.stringify({ name, email, password }));
+
+            // Switch to OTP screen first, then generate OTP
+            showMessage(`Verification code will be sent to ${email}`, 'success');
+            setTimeout(() => {
+                switchToOTP(email);
+                generateOTP(); // Generate OTP after switching to OTP screen
+            }, 1000);
+        }
+
+        // OTP Generation
+        function generateOTP() {
+            generatedOTP = Math.floor(100000 + Math.random() * 900000).toString();
+            console.log('Generated OTP:', generatedOTP); // In production, this would be sent via email
+            
+            // Only display OTP if we're on the OTP verification screen
+            const otpForm = document.getElementById('otpForm');
+            const otpDisplay = document.getElementById('otpDisplay');
+            
+            if (otpForm && otpForm.classList.contains('active') && otpDisplay) {
+                otpDisplay.textContent = generatedOTP;
+                showMessage('OTP Generated Successfully!', 'success');
+            }
+        }
+
+        // OTP Input handling
+        function moveToNext(current, nextId) {
+            if (current.value.length === 1 && nextId) {
+                document.getElementById(nextId).focus();
+            }
+        }
+
+        function handleBackspace(event, current, prevId) {
+            if (event.key === 'Backspace' && current.value === '' && prevId) {
+                document.getElementById(prevId).focus();
+            }
+        }
+
+        function handleOTPComplete() {
+            const otp = getOTPValue();
+            if (otp.length === 6) {
+                // Auto-verify when all digits are entered
+                setTimeout(verifyOTP, 300);
+            }
+        }
+
+        function getOTPValue() {
+            let otp = '';
+            for (let i = 1; i <= 6; i++) {
+                otp += document.getElementById(`otp${i}`).value;
+            }
+            return otp;
+        }
+
+        function clearOTP() {
+            for (let i = 1; i <= 6; i++) {
+                document.getElementById(`otp${i}`).value = '';
+            }
+            document.getElementById('otp1').focus();
+        }
+
+        // OTP Verification
+        function verifyOTP() {
+            const enteredOTP = getOTPValue();
+
+            if (enteredOTP.length !== 6) {
+                showMessage('Please enter a complete 6-digit OTP', 'error');
+                return;
+            }
+
+            if (enteredOTP === generatedOTP) {
+                // Get pending user data
+                const pendingUser = JSON.parse(sessionStorage.getItem('pendingUser'));
+                
+                // Save user to localStorage
+                const users = JSON.parse(localStorage.getItem('users') || '[]');
+                users.push({
+                    name: pendingUser.name,
+                    email: pendingUser.email,
+                    password: pendingUser.password,
+                    verified: true,
+                    createdAt: new Date().toISOString()
+                });
+                localStorage.setItem('users', JSON.stringify(users));
+                
+                // Set current user
+                localStorage.setItem('currentUser', JSON.stringify({
+                    name: pendingUser.name,
+                    email: pendingUser.email
+                }));
+
+                // Clear pending user
+                sessionStorage.removeItem('pendingUser');
+                
+                showMessage('Account created successfully! Redirecting...', 'success');
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 1500);
+            } else {
+                showMessage('Invalid OTP. Please try again.', 'error');
+                clearOTP();
+            }
+        }
+
+        // Resend OTP
+        function resendOTP() {
+            if (resendTimer) {
+                showMessage('Please wait before requesting a new code', 'error');
+                return;
+            }
+
+            generateOTP();
+            showMessage('New OTP sent successfully!', 'success');
+            clearOTP();
+            startResendTimer();
+        }
+
+        function startResendTimer() {
+            resendSeconds = 60;
+            const resendBtn = document.getElementById('resendBtn');
+            const timer = document.getElementById('timer');
+            
+            resendBtn.disabled = true;
+            timer.classList.add('active');
+            
+            resendTimer = setInterval(() => {
+                resendSeconds--;
+                timer.textContent = `Resend code in ${resendSeconds}s`;
+                
+                if (resendSeconds <= 0) {
+                    clearInterval(resendTimer);
+                    resendTimer = null;
+                    resendBtn.disabled = false;
+                    timer.classList.remove('active');
+                    timer.textContent = 'Didn\'t receive the code?';
+                }
+            }, 1000);
+        }
+
+        // Validation helpers
+        function isValidEmail(email) {
+            return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+        }
+
+        // Check if user is already logged in
+        window.addEventListener('load', () => {
+            const currentUser = localStorage.getItem('currentUser');
+            if (currentUser) {
+                const user = JSON.parse(currentUser);
+                showMessage(`Welcome back, ${user.name}! Redirecting...`, 'success');
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 1500);
+            }
+        });
+    </script>
+</body>
+</html>
